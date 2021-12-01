@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/integration/rpctest"
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
@@ -15,7 +14,7 @@ import (
 func setUpTestBackend(t *testing.T) (*rpctest.Harness, *BitcoindConn) {
 	regtestParams := &chaincfg.RegressionNetParams
 
-	rpcHarness, err := rpctest.New(regtestParams, nil, nil, "")
+	rpcHarness, err := rpctest.New(regtestParams, nil, nil, "", true)
 	if err != nil {
 		t.Fatalf("unable to create primary harness: %v", err)
 	}
@@ -36,8 +35,6 @@ func setUpTestBackend(t *testing.T) (*rpctest.Harness, *BitcoindConn) {
 		// Set the below timers to a lower number for testing purposes.
 		PollBlockTimer: time.Second,
 		PollTxTimer:    time.Second,
-		DisableTLS:     false,
-		Certificates:   rpcCfg.Certificates,
 	})
 	if err != nil {
 		t.Fatalf("failed to create bitcoind conn: %v", err)
